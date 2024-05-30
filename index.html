@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App weather</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./src/img/favIcon/favIcon.png" />
+    <link href="./dist/output.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- control main -->
+    <div
+      class="relative flex h-max w-screen items-center justify-center overflow-y-scroll md:h-screen md:overflow-y-hidden"
+    >
+      <!-- main -->
+      <div
+        class="z-50 mt-2 flex h-[90%] w-[90%] flex-col rounded-md border border-red-400 bg-indigo-400 bg-opacity-40 bg-clip-padding p-2 backdrop-blur-0 backdrop-filter md:mt-0 md:h-[75%] md:w-[70%] md:flex-row md:backdrop-blur-2xl"
+      >
+        <!-- left side -->
+        <div class="flex h-full w-full flex-col justify-between p-1 pt-1 md:mt-0 md:w-[27%] md:p-2">
+          <!-- search -->
+          <form class="flex h-max w-full items-start">
+            <!-- input & icon  -->
+            <div class="relative w-full">
+              <!-- icon location -->
+              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <i class="fa-solid fa-search text-[16px] text-blue-500 dark:text-gray-400"></i>
+              </div>
+              <!-- search input -->
+              <input
+                type="text"
+                class="get-city block w-full rounded-lg border border-gray-300 bg-gray-50 p-1 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                placeholder="Search"
+                autocomplete="on"
+              />
+              <!-- button search -->
+              <button
+                type="submit"
+                class="search-btn absolute inset-y-0 right-0 ml-1 rounded-lg border border-blue-700 bg-blue-700 p-1 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 hover:bg-blue-800 dark:bg-blue-600 dark:focus:ring-blue-800 dark:hover:bg-blue-700"
+              >
+                <i class="fa-solid fa-magnifying-glass text-[16px]"></i>
+              </button>
+              <!-- text error -->
+              <div class="absolute left-3 -bottom-5">
+                <p class="text-error hidden text-sm font-bold text-red-800 dark:text-yellow-500">
+                  Oops! Invalid location
+                </p>
+              </div>
+            </div>
+          </form>
+          <!-- svg weather -->
+          <div
+            class="flex h-40 w-40 items-center justify-center max-md:ml-[26%] md:h-72 md:w-full md:items-start"
+          >
+            <img class="weather-image h-3/4 w-3/4 pt-7 pr-2" src="./src/img/weather/day/113.png" />
+          </div>
+          <!-- temperature , day , date -->
+          <div
+            class="mb-4 flex h-20 w-full flex-col items-center justify-between text-black md:h-44"
+          >
+            <!-- temperature -->
+            <div class="flex items-center dark:text-red-500">
+              <p class="text-3xl font-bold" id="temp">0</p>
+              <p class="text-base">&#176;</p>
+              <p class="text-lg">c</p>
+            </div>
+            <!-- weather -->
+            <p class="pr-3 font-bold dark:text-sky-300" id="weather">Weather</p>
+            <!-- day , date -->
+            <div class="flex gap-1 font-semibold dark:text-sky-300">
+              <p id="today">Monday</p>
+              <p id="time">00:00</p>
+            </div>
+          </div>
+          <!-- name city -->
+          <div
+            class="name-city border-1 relative mx-0 flex h-40 w-[90%] items-center justify-center gap-2 rounded-lg border border-indigo-400 p-0 max-md:ml-4 md:mx-2 md:h-80 md:max-h-80 md:p-2"
+          >
+            <div class="absolute left-1 bottom-1 z-20 flex gap-1 p-1">
+              <i class="fa-solid fa-location-dot text-blue-500 dark:text-gray-400"></i>
+              <p class="text-sm font-bold capitalize text-yellow-400" id="country">country</p>
+            </div>
+            <p
+              class="z-20 text-3xl font-semibold capitalize text-white/75 text-opacity-10"
+              id="city"
+            >
+              city
+            </p>
+            <img
+              src="./src/img/cover/world.jpg"
+              class="search-Image absolute inset-0 z-10 h-full w-full max-w-full rounded-lg bg-contain brightness-[0.65] md:h-full md:max-h-[250px] md:max-w-[250px]"
+            />
+          </div>
+        </div>
+        <!-- right side desktop or bottom side mobile -->
+        <div class="gap flex h-full w-full flex-col items-center justify-between md:w-[73%]">
+          <!-- first -->
+          <div class="flex h-max w-full justify-between">
+            <!-- weekly & hourly name -->
+            <div class="btn-container">
+              <p class="btn hourly-btn active-btn"><i class="fa-solid fa-clock mr-1"></i>Hourly</p>
+              <p class="btn weekly-btn"><i class="fa-solid fa-calendar-week mr-1"></i>Weekly</p>
+            </div>
+          </div>
+          <!-- weekly & hourly dev -->
+          <div
+            class="forecast-hour scrollbar-medium flex h-1/4 w-full items-center justify-between gap-1 overflow-x-visible scroll-auto rounded-md border border-indigo-400 overflow-y-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-indigo-700 scrollbar-track-rounded-[5px] scrollbar-thumb-rounded-[5px] dark:scrollbar-thumb-yellow-500 md:gap-4"
+          >
+            <!-- forecast -->
+            <div class="week-days-container flex w-full justify-between"></div>
+          </div>
+          <!-- bottom -->
+          <div class="h-[60%] w-full max-md:pt-5">
+            <!-- control bottom & today highlight -->
+            <div class="flex h-full w-full flex-col items-center justify-start">
+              <!-- title -->
+              <div class="flex w-full items-center justify-start">
+                <p class="text-base dark:text-amber-400 md:text-xl">Today's Highlight</p>
+              </div>
+              <!-- control item -->
+              <div class="grid h-full w-full gap-1 p-1 md:grid-cols-3 md:grid-rows-2">
+                <!-- Visibility -->
+                <div class="todays-card">
+                  <div class="flex h-full flex-col justify-between">
+                    <p class="text-base font-bold text-indigo-900 dark:text-sky-300">
+                      <i class="fa-solid fa-eye mr-2"></i>Visibility
+                    </p>
+                    <div class="flex items-baseline gap-1 text-base">
+                      <p class="text-3xl text-black dark:text-white" id="Visibility">0</p>
+                      <p class="text-base font-semibold text-gray-800 dark:text-red-900">km</p>
+                    </div>
+                    <p id="statusVisibility" class="font-medium text-red-900 dark:text-blue-900">
+                      status
+                    </p>
+                  </div>
+                  <div class="relative flex h-full w-24 items-center justify-between">
+                    <!-- car -->
+                    <i
+                      class="fa-solid fa-car change-vis absolute bottom-1 right-[34px] z-20 -translate-y-[var(--vis)] text-3xl text-red-600 transition-transform duration-1000 ease-in-out"
+                    ></i>
+                    <!-- road -->
+                    <img
+                      src="./src/img/svg/road.svg"
+                      class="h-full w-full fill-current text-indigo-700"
+                      alt="Road"
+                    />
+                  </div>
+                </div>
+                <!-- uv Index -->
+                <div class="todays-card">
+                  <div class="flex h-full flex-col justify-between">
+                    <p class="text-base font-bold text-indigo-900 dark:text-sky-300">
+                      <i class="fa-brands fa-uniregistry m-2"></i>UV Index
+                    </p>
+                    <div class="flex items-baseline gap-1 text-base">
+                      <p class="text-3xl text-black dark:text-white" id="unIndex">0</p>
+                    </div>
+                    <p class="text-base font-medium text-red-900 dark:text-blue-900" id="uvStatus">
+                      status
+                    </p>
+                  </div>
+                  <div
+                    class="relative flex h-24 -translate-x-16 items-center justify-center self-start md:h-full"
+                  >
+                    <div class="grid-row-5 grid h-20 w-6 bg-red-600">
+                      <div class="bg-violet-600"></div>
+                      <div class="bg-red-600"></div>
+                      <div class="bg-orange-600"></div>
+                      <div class="bg-yellow-600"></div>
+                      <div class="bg-green-600"></div>
+                    </div>
+
+                    <span class="absolute -right-[49px] -z-10">
+                      <img
+                        src="./src/img/svg/sun.svg"
+                        class="h-20 w-20 fill-current text-yellow-400"
+                        alt="sun"
+                      />
+                      <i
+                        class="fa-solid fa-play change-uv absolute -left-3 bottom-0 z-10 -translate-y-[var(--uv)] text-base text-red-800 transition-transform duration-300 ease-in-out"
+                      ></i>
+                    </span>
+                  </div>
+                </div>
+                <!-- max min temperature -->
+                <div class="temperature-card">
+                  <p class="temperature-title">Temperature</p>
+                  <div class="temperature-info">
+                    <i class="fa-solid fa-temperature-full"></i>
+                    <p class="temperature-label">Max</p>
+                    <div class="temperature-value">
+                      <p id="maxTemp" class="temperature-number">0</p>
+                      <p class="temperature-unit">°c</p>
+                    </div>
+                  </div>
+                  <div class="temperature-info">
+                    <i class="fa-solid fa-temperature-quarter"></i>
+                    <p class="temperature-label">Min</p>
+                    <div class="temperature-value">
+                      <p id="minTemp" class="temperature-number">0</p>
+                      <p class="temperature-unit">°c</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- humidity -->
+                <div class="todays-card">
+                  <!-- description -->
+                  <div class="flex h-full flex-col justify-between">
+                    <p class="text-base font-bold text-indigo-900 dark:text-sky-300">
+                      <i class="fa-solid fa-droplet mr-2"></i>Humidity
+                    </p>
+                    <div class="flex items-baseline gap-1 text-base">
+                      <p class="text-3xl text-black dark:text-white" id="humidity">0</p>
+                      <p class="text-base font-semibold text-gray-900 dark:text-red-900">%</p>
+                    </div>
+                    <p
+                      class="text-base font-medium text-red-900 dark:text-blue-900"
+                      id="statusHumidity"
+                    >
+                      status
+                    </p>
+                  </div>
+                  <!-- input -->
+                  <div class="flex h-full -rotate-90 items-center justify-center">
+                    <input
+                      type="range"
+                      class="range-humidity pointer-events-none h-10 w-[70%] transition-transform duration-1000"
+                    />
+                  </div>
+                </div>
+                <!-- wind status  -->
+                <div class="todays-card">
+                  <!-- description -->
+                  <div class="flex h-full flex-col justify-between">
+                    <p class="text-base font-bold text-indigo-900 dark:text-sky-300">
+                      <i class="fa-solid fa-wind mr-2"></i>Wind
+                    </p>
+                    <div class="flex items-baseline justify-between">
+                      <p class="text-3xl text-black dark:text-white" id="speed">0</p>
+                      <p class="ml-2 text-base font-semibold text-gray-900 dark:text-red-900">
+                        km/h
+                      </p>
+                    </div>
+                    <p class="text-sm font-medium text-red-900 dark:text-blue-900" id="wind-dir">
+                      Direction
+                    </p>
+                  </div>
+                  <!-- degree wind -->
+                  <div class="flex self-center pr-5">
+                    <div
+                      class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-red-800"
+                    >
+                      <div class="flex -rotate-[45deg] items-center justify-center pl-1">
+                        <i
+                          class="fa-solid fa-location-arrow deg-wind rotate-[var(--deg)] text-xl transition-transform duration-1000"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- sunset & sunrise -->
+                <div
+                  class="relative h-32 w-full rounded-md p-2 font-bold text-indigo-900 opacity-95 backdrop-blur-3xl md:h-full"
+                >
+                  <p class="absolute left-2 top-1 text-base dark:text-sky-300">
+                    <i class="fa-solid fa-sun-plant-wilt mr-2"></i>Sunset & Sunrise
+                  </p>
+
+                  <div
+                    class="absolute right-2 top-4 h-20 w-44 overflow-hidden md:left-10 md:top-9 md:overflow-hidden"
+                  >
+                    <div
+                      class="sun-rotate absolute left-2 top-4 mx-auto h-40 w-40 rotate-[var(--rot)] rounded-full border-4 border-yellow-600 transition-transform duration-1000"
+                    >
+                      <div class="relative">
+                        <span
+                          class="sun-moon absolute -left-[9px] top-12 h-4 w-4 rounded-full bg-yellow-400 shadow-[0px_0px_11px_10px_#faf089]"
+                        ></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="absolute right-2 bottom-1 flex gap-7 text-base dark:text-white md:bottom-0 md:left-8 md:gap-10"
+                  >
+                    <p id="sunRise">00:00</p>
+                    <p id="localTime">00:00</p>
+                    <p id="sunSet">00:00</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- background -->
+      <div class="absolute inset-0 h-full w-full overflow-hidden">
+        <!-- day -->
+        <div
+          class="day-mood absolute inset-0 bg-gradient-to-b from-sky-500 via-sky-600 to-blue-800 transition-all duration-300"
+        >
+          <!--control day -->
+          <div class="day-sky relative h-full w-full">
+            <!-- sun -->
+            <div
+              class="absolute right-24 top-14 hidden h-14 w-14 rounded-full bg-[#f2ff00] shadow-[0px_0px_112px_76px_#faf089] md:visible"
+            ></div>
+          </div>
+        </div>
+
+        <!-- night -->
+        <div
+          class="night-mood absolute inset-0 hidden bg-gradient-to-b from-slate-900 via-neutral-800 to-indigo-800 transition-all duration-300"
+        >
+          <!-- control night -->
+          <div class="night-sky relative h-full w-full">
+            <!-- moon -->
+            <div
+              class="fa-solid fa-moon absolute right-9 top-8 z-20 !hidden -rotate-2 text-[128px] text-indigo-500 md:block"
+            ></div>
+            <!-- end -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- java script -->
+    <script src="https://kit.fontawesome.com/f4fd56ecdd.js" crossorigin="anonymous"></script>
+    <script src="./src/main.js"></script>
+  </body>
+</html>
