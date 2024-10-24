@@ -60,26 +60,4 @@ Technologies used
 
 Run Locally
 
-1. Clone the project
 
-```bash
-https://github.com/aliseyedi01/weather-app.git
-```
-
-2. Go to the project directory
-
-```bash
-  cd weather-app
-```
-
-3. Install dependencies
-
-```bash
-  npm install
-```
-
-4. Start the server
-
-```bash
-  npm run dev
-```
